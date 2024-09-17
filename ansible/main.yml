@@ -1,0 +1,29 @@
+---
+- name: Installing Apache2 Server 
+  hosts: web
+  become: yes
+  tasks:
+    - name: Set up yum  module
+      copy:
+        src: /root/centOS_yum_config/CentOS-Base.repo
+        dest: /etc/yum.repos.d/CentOS-Base.repo
+        mode: "0644"
+
+    - name: Install Apache server
+      yum:
+        name: httpd
+        state: present
+
+    - name: Starting
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: Copying HTML file
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html
+        mode: 0644
+
+
